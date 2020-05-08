@@ -1,0 +1,76 @@
+pipeline
+{
+
+agent none
+stages
+{
+
+stage('non parallel stage')
+{
+agent {
+	label "master"
+}
+ steps
+	{
+	  echo 'This will be executed for master node. I think!!!!';
+	  git 'https://github.com/sweta6990/git-github.git'
+	}
+}
+
+stage('non parallel stage2')
+{
+agent {
+	label "Slave1_Windows"
+}
+ steps
+    	{
+	  echo 'This will be executed for slave node.';
+	  git 'https://github.com/sweta6990/git-github.git'
+	}
+}
+
+stage('test')
+{
+parallel 
+{
+ stage('ParallelStage1') {
+ agent 
+ 	{
+	  label "Slave1_Windows"
+	}
+ steps
+	{
+	  echo 'This stage complete at %date% %time%. Executed on slave1_Windows node parallely with the Master node.';
+	  bat 'Test.bat'
+	}
+  }
+
+stage('ParallelStage2'){
+ agent 
+	{
+	label "master"
+	}
+ steps
+	{
+	 echo 'This stage completed at %date% %time%. Executed on master node parallely with the slave1_Windows node.';
+	 bat 'Test2.bat';
+	}
+}
+}
+}
+}
+
+post 
+{
+ always { echo 'This will always run.'}
+
+ success { echo 'This will run when all stages passed.' }
+
+ failure { echo 'This will run when one of the stages fails.' }
+
+ unstable { echo 'This will run when pipeline is unstable.' }
+
+ changed {echo 'This will run when state of pipeline has changed, e.g if pipeline was failing previously and have passed now.' }
+}
+
+}
