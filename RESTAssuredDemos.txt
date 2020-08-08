@@ -1,0 +1,434 @@
+1111111111111111111111111111111111111111111111111111111
+------------------------------------------------------------------------------------------------------------------------------------------
+package demo01;
+
+import org.testng.annotations.Test;
+
+import io.restassured.RestAssured;
+import io.restassured.http.Header;
+import io.restassured.response.Response;
+
+public class Demo1 {
+  @Test
+  public void f() {
+	  
+	  Response response;
+	  Header h1=new Header("Accept", "application/json");
+	  response = RestAssured.given().header(h1).get("http://localhost:8080/InfyClinicV2/APP_V2/getDoctor/byId?doctorId=1001");
+
+		
+		String responseBody = response.getBody().asString();
+		System.out.println("Response Body is =>  " + responseBody);
+	  
+	 
+  }
+}
+
+
+----------------------------------------------------------------------------------------------------------------------------------------
+
+22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222
+
+package demo01;
+
+import org.testng.annotations.Test;
+
+public class Demo2 {
+  @Test
+  public void f() {
+	  
+	  Response response;
+	  Header h1=new Header("Accept", "application/json");
+	  response = RestAssured.given().header(h1).get("http://localhost:8080/InfyClinicV2/APP_V2/getDoctor/byId?doctorId=1001");
+
+		String id=response.getSessionId();
+		System.out.println("Session ID: "+ id);
+		
+		String contentType = response.getContentType();
+		System.out.println("Content-Type value: "+contentType);
+	 
+  }
+}
+
+-------------------------------------------------------------------------------------------------------------------------------------
+
+333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333
+
+package demo01;
+
+import org.testng.annotations.Test;
+
+import io.restassured.RestAssured;
+import io.restassured.http.Header;
+import io.restassured.response.Response;
+
+public class Demo3 {
+  @Test
+  public void f() {
+	  Response response;
+	  Header h1=new Header("Accept", "application/json");
+	  response = RestAssured.given().header(h1).get("http://localhost:8080/InfyClinicV2/APP_V2/getDoctor/byId?doctorId=1001");
+
+		//To retrieve status line of the response from the server and print the returned value.
+		String statusLine = response.getStatusLine();
+		System.out.println("Status Line: "+statusLine );
+		//To retrieve response status from the server and print the returned value.
+		int statusCode = response.getStatusCode();
+		System.out.println("Status Code: "+statusCode );	
+	 
+  }
+}
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444
+
+package demo01;
+
+import org.testng.annotations.Test;
+
+import io.restassured.RestAssured;
+import io.restassured.http.Header;
+import io.restassured.http.Headers;
+import io.restassured.response.Response;
+
+public class Demo4 {
+  @Test
+  public void f() {
+	  
+	  
+	  Response response;
+	  Header h1=new Header("Accept", "application/json");
+	  response = RestAssured.given().header(h1).get("http://localhost:8080/InfyClinicV2/APP_V2/getDoctor/byId?doctorId=1001");
+
+		
+		// Get all the headers, return value is of type Headers.
+		Headers allHeaders = response.getHeaders();	
+		
+		// Headers class implements Iterable interface.
+		// Iterate over all the Headers using an advance for loop as shown in the code below
+		
+		for(Header header : allHeaders) {
+			System.out.println("Key: " + header.getName() + " Value: " + header.getValue());
+			
+		}
+		
+  }
+}
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555
+
+package demo01;
+
+import org.testng.annotations.Test;
+
+import io.restassured.RestAssured;
+import io.restassured.http.Header;
+import io.restassured.response.Response;
+
+public class Demo5 {
+  @Test
+  public void f() {
+	  
+	  
+	  Response response;
+	  Header h1=new Header("Accept", "application/json");
+	  response = RestAssured.given().header(h1).get("http://localhost:8080/InfyClinicV2/APP_V2/getDoctor/byId?doctorId=1001");
+
+		
+		// Reader header is passed with exact header name as argument.
+		// In the below line,we will get header named "Content-Type"
+		String contentType = response.header("Content-Type");
+		System.out.println("Content-Type value: " + contentType);
+		// Reader header is passed with exact header name as argument.
+		// In the below line,we will get header named "Server"
+		String serverType =  response.header("Server");
+		System.out.println("Server value: " + serverType);
+		// Reader header is passed with exact header name as argument.
+		// In the below line,we will get header named "Date"
+		String date = response.header("Date");
+		 System.out.println("Date value: " + date);
+  }
+}
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666
+
+package demo01;
+
+
+import org.testng.annotations.Test;
+
+import io.restassured.RestAssured;
+import io.restassured.http.Header;
+import io.restassured.path.json.JsonPath;
+
+import io.restassured.response.Response;
+
+public class Demo6 {
+  @Test
+  public void f() {
+	 
+	  Response response;
+	  Header h1=new Header("Accept", "application/json");
+	  response = RestAssured.given().header(h1).get("http://localhost:8080/InfyClinicV2/APP_V2/getDoctor/byId?doctorId=1001");
+
+		
+		// First get the JsonPath object instance from the Response interface
+		JsonPath jsonPathEvaluator = response.jsonPath();
+		// Then simply query the JsonPath object to get a String value of the node
+		// specified by JsonPath: City (Note: You should not put $. in the Java code)
+		String name = jsonPathEvaluator.get("doctorName");
+		// Print the name variable to see what we got
+		System.out.println("Name of the doctor is: " + name);
+  }
+}
+
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+77777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
+
+package demo01;
+
+
+import org.testng.Assert;
+
+public class Demo7 {
+  @Test
+  public void f() {
+	  
+	  Response response;
+	 
+	  
+	  Header h1=new Header("Accept", "application/json");
+	  response = RestAssured.given().header(h1).get("http://localhost:8080/InfyClinicV2/APP_V2/getDoctor/byId?doctorId=1001");
+	  JsonPath jsonPathEvaluator = response.jsonPath();
+	  String name = jsonPathEvaluator.get("doctorName");
+	  System.out.println("Name of the doctor is: " + name);
+	  Assert.assertEquals(name /* actual value */, "John"/* Expected Value */,"Incorrect doctor name");
+}}
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
+
+package demo01;
+
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import io.restassured.RestAssured;
+import io.restassured.http.Header;
+import io.restassured.response.Response;
+
+public class Demo8 {
+  @Test
+  public void f() {
+	  Response response;
+	  Header h1=new Header("Accept", "application/json");
+	  response = RestAssured.given().header(h1).get("http://localhost:8080/InfyClinicV2/APP_V2/getDoctor/byId?doctorId=1001");
+		
+	//Validating STATUS CODE from response
+	  int statusCode = response.getStatusCode();
+	  Assert.assertEquals(statusCode /*actual value*/, 200 /*expected value*/, "InCorrect status code returned");
+	  
+	//Validating STATUS LINE from response
+	  String statusLine = response.getStatusLine();
+	  Assert.assertEquals(statusLine /*actual value*/, "HTTP/1.1 200 " /*expected value*/, "InCorrect status Line returned");
+	  
+	//Validating CONTENT TYPE from response
+	  String contentType = response.getContentType();
+	  Assert.assertEquals(contentType /* actual value */, "application/json" /* expected value */);
+	  
+	//Validating text from response
+	  String responseBody = response.getBody().asString();
+
+	Assert.assertEquals(responseBody.contains("John") /*Expected value*/, true /*Actual Value*/, "Response body does not contain John");
+}}
+
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
+
+package demo01;
+
+
+import java.io.FileInputStream;
+import java.io.IOException;
+
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.testng.annotations.Test;
+
+import io.restassured.RestAssured;
+
+
+import io.restassured.response.Response;
+
+public class Demo9 {
+  @Test
+  public void f() throws IOException {
+	 
+	  Response response;
+	  
+		
+	// Path from where the excel file has to be read
+			String path = "/root/Desktop/user_repo/To_Participant/AdditionalSuppliedFiles/get.xls";
+			// File input stream which needs the input as the file location
+			FileInputStream fis = new FileInputStream(path);
+			// Workbook reference of the excel file
+			HSSFWorkbook wb= new HSSFWorkbook(fis);
+			
+			// Sheet which needs to be accessed from within the workbook
+			HSSFSheet sheet = wb.getSheetAt(0);
+			
+			// Count the number of rows
+			int rowCount = sheet.getLastRowNum() - sheet.getFirstRowNum();
+			// Iterate the AccountNumber
+			for (int i = 1; i <= rowCount; i++) {
+				// Pass the row number and the cell number from where the value has to be fetched
+				
+				
+				DataFormatter formatter = new DataFormatter();
+				HSSFCell cell = sheet.getRow(i).getCell(0);
+				String id=formatter.formatCellValue(cell);
+				
+			
+				// Make a request to the server by specifying the method Type and the method URL
+				// This will return the Response from the server. Store the response in a reference variable created above.
+				response = RestAssured.get("http://localhost:8088/InfyClinicV2/APP_V2/getDoctor/byId?doctorId=" + id + "");
+				// print the message body of the response received from the server
+				String responseBody = response.getBody().asString();
+				System.out.println("Response Body is =>  " + responseBody);
+				}
+			wb.close();
+  }
+}
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
+package demo01;
+
+import org.json.JSONObject;
+
+public class Demo10 {
+  @Test
+  public void f() {
+	 
+	// Specify the base URL to the RESTful web service
+			RestAssured.baseURI = "http://localhost:8080/InfyClinicV2/APP_V2";
+			// Get the RequestSpecification of the request that you want to sent to the server
+			// The server is specified by the BaseURI that we have specified in the above step
+			RequestSpecification request = RestAssured.given();
+			
+			// Add a header stating the Request body is a JSON
+			request.header("Content-Type", "application/json");
+			// Create an object for JSONObject class
+			JSONObject requestParams = new JSONObject();
+			
+			// We can add key-Value pairs using put method
+			requestParams.put("patientName", "same");
+			requestParams.put("age", "24");
+			requestParams.put("temperature","095.20");
+			// Add string form of JSON to the body of the request
+			request.body(requestParams.toString());
+			// Post the request and check the response
+			Response response = request.post("/AdmitPatient");
+			//Obtain the response in string form 
+			String responseBody = response.getBody().asString();
+			System.out.println("Response Body is =>  " + responseBody);
+	        int statusCode = response.getStatusCode();
+	  	  System.out.println(statusCode);
+          //status code on Successful  execution should be 200 in some cases it may come as 201. both are true
+	  	  Assert.assertEquals(statusCode /*actual value*/, 200 /*expected value*/, "INCorrect status code returned");
+	  	  System.out.println(statusCode);
+
+	     
+		
+		
+		}
+  }
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------------
+
+BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+
+package demo01;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.json.JSONObject;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+
+public class Demo11 {
+  @Test
+  public void f() throws IOException {
+	 
+	// Create a reference for Response interface
+			Response response;
+			// Specify the base URI to the RESTful web service
+			RestAssured.baseURI = "http://localhost:8080/InfyClinicV2/APP_V2";
+			// Get the RequestSpecification of the request that you want to sent to the server
+			RequestSpecification request = RestAssured.given();
+			// Add a header stating the Request body is a JSON
+			request.header("Content-Type", "application/json");
+			// Create an object for JSONObject class
+			JSONObject requestParams = new JSONObject();
+			// Path from where the excel file has to be read
+			String path = "/root/Desktop/user_repo/To_Participant/AdditionalSuppliedFiles/post.xls";
+			// File input stream which needs the input as the file location
+			FileInputStream fis = new FileInputStream(path);
+			// Workbook reference of the excel file
+			HSSFWorkbook wb= new HSSFWorkbook(fis);
+			// Sheet which needs to be accessed from within the workbook
+			HSSFSheet sheet = wb.getSheetAt(0);
+			// Count the number of rows
+			int rowNo = sheet.getLastRowNum() - sheet.getFirstRowNum();
+			// Iterate the AccountNumber/AccountHolderName/IFSCCode
+			for (int i = 1; i <= rowNo; i++) {
+				// We can add key-Value pairs using put method
+				requestParams.put("patientName", sheet.getRow(i).getCell(0).getStringCellValue());
+				requestParams.put("age", sheet.getRow(i).getCell(1).getNumericCellValue());
+				requestParams.put("temperature", sheet.getRow(i).getCell(2).getNumericCellValue());
+				// Add string form of JSON to the body of the request
+				request.body(requestParams.toString());
+				// Post the request and check the response
+				response = request.post("/AdmitPatient");
+				int statusCode = response.getStatusCode();
+				
+			  	  Assert.assertEquals(statusCode /*actual value*/, 200 /*expected value*/, "INCorrect status code returned");
+		} 
+			wb.close();
+  }
+  }
+
